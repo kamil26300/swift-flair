@@ -4,7 +4,7 @@ import AdminProductList from "../../features/admin/components/AdminProductList";
 const AdminHomePage = () => {
   return (
     <>
-      <MetaData />
+      <MetaData title="Admin" />
       <AdminProductList />
     </>
   );

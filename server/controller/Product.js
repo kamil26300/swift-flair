@@ -39,7 +39,8 @@ exports.fetchAllProductsByFilter = async (req, res) => {
   try {
     const docs = await query.exec();
     const totalLength = await totalItems.countDocuments();
-    res.set("X-Total-Count", totalLength);
+    res.set("X-Total-Count", totalLength);    
+    
     res.status(200).json(docs);
   } catch (error) {
     res.status(400).json(error);

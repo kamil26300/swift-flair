@@ -81,15 +81,15 @@ export default function Header() {
                   <Link to="/">
                     <img className="h-10 w-auto" src={logo} alt="Swift Flair" />
                   </Link>
-                  <div className="hidden sm:flex text-white select-none gap-1 px-3 py-2 bg-gray-600 text-sm font-medium">
+                  <div className="sf hidden sm:flex text-white select-none gap-1 px-3 py-2 font-extrabold">
                     <div className="text-[#3498DB]">Swift</div>
                     <div className="text-[#E74C3C]">Flair</div>
                   </div>
                 </div>
                 <div className="my-auto hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
-                    {navigation.map((item) => (
-                      <>
+                    {navigation.map((item, id) => (
+                      <div key={id} >
                         {((item.admin === true && user?.role === "admin") ||
                           item.admin === false) && (
                           <Link
@@ -106,7 +106,7 @@ export default function Header() {
                             {item.name}
                           </Link>
                         )}
-                      </>
+                      </div>
                     ))}
                   </div>
                 </div>

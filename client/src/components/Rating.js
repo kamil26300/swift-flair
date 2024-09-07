@@ -42,8 +42,8 @@ const Rating = ({ rating }) => {
   return (
     <div className="flex items-center gap-1">
       <div className="flex">
-        {[1, 2, 3, 4, 5].map((num) => (
-          <div key={num.id}>
+        {[1, 2, 3, 4, 5].map((num, id) => (
+          <div key={id}>
             {rating < num
               ? PartialStar((rating - (num - 1)) * 100)
               : FullStar()}

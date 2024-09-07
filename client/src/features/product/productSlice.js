@@ -119,8 +119,10 @@ export const productSlice = createSlice({
       })
       .addCase(updateProductAsync.fulfilled, (state, action) => {
         state.loadingProduct = false;
-        const index = state.products.findIndex(product => product.id === action.payload.id)
-        state.products[index] = action.payload
+        const index = state.products.findIndex(
+          (product) => product.id === action.payload.id
+        );
+        state.products[index] = action.payload;
       });
   },
 });

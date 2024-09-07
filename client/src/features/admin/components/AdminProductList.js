@@ -21,7 +21,6 @@ import {
 
 // Icons
 import { AiOutlineDown, AiOutlinePlus } from "react-icons/ai";
-import { PiSquaresFourBold } from "react-icons/pi";
 import Rating from "../../../components/Rating";
 import NoData from "../../../components/NoData";
 import { RxCross2 } from "react-icons/rx";
@@ -99,7 +98,16 @@ export default function AdminProductList() {
   };
 
   useEffect(() => {
-    handlePage(1);
+    const handlePageOne = () => {
+      setSelectedQuery((prev) => ({
+        ...prev,
+        deleted: { false: true },
+        _page: { 1: true },
+        _limit: { [ITEMS_PER_PAGE]: true },
+      }));
+      setSelectedPage(1);
+    };
+    handlePageOne();
   }, [selectedFilter, selectedSort]);
 
   useEffect(() => {
@@ -122,11 +130,12 @@ export default function AdminProductList() {
           setMobileFiltersOpen={setMobileFiltersOpen}
           selectedFilter={selectedFilter}
           handleFilterChange={handleFilterChange}
+          loading={loadingFilter}
         />
       )}
 
       <main className="mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex gap-9 items-baseline justify-between border-b border-gray-200">
+        <div className="flex gap-9 bg-[#1A1A1A] pt-5 z-30 items-baseline justify-between border-b border-gray-200 sticky top-16">
           <h1 className="text-2xl sm:text-4xl font-bold tracking-tight">
             All Products
           </h1>
@@ -176,9 +185,6 @@ export default function AdminProductList() {
               </Transition>
             </Menu>
 
-            <button type="button" className="p-2 hover:text-gray-500">
-              <PiSquaresFourBold className="h-5 w-5" aria-hidden="true" />
-            </button>
             <button
               type="button"
               className="p-2 hover:text-gray-500 lg:hidden"
@@ -191,15 +197,12 @@ export default function AdminProductList() {
 
         <section aria-labelledby="products-heading" className="pt-6">
           <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
-            {filters && (
-              <DesktopFilter
-                selectedFilter={selectedFilter}
-                loading={loadingFilter}
-                filters={filters}
-                handleFilterChange={handleFilterChange}
-              />
-            )}
-
+            <DesktopFilter
+              selectedFilter={selectedFilter}
+              filters={filters}
+              handleFilterChange={handleFilterChange}
+              loading={loadingFilter}
+            />
             <ProductGrid products={products} loading={loadingProduct} />
           </div>
           <Pagination
@@ -345,7 +348,7 @@ function DesktopFilter({
   return (
     <form className="hidden lg:block">
       {!loading ? (
-        <>
+        <div className="sticky top-32">
           {filters.map((section) => (
             <Disclosure
               as="div"
@@ -375,7 +378,7 @@ function DesktopFilter({
                         <div key={option.value} className="flex items-center">
                           <input
                             id={`filter-${section.id}-${optionIdx}`}
-                            name={`${section.id}[]`}
+                            name={`${section.id}`}
                             defaultValue={option.value}
                             type="checkbox"
                             checked={
@@ -401,7 +404,7 @@ function DesktopFilter({
               )}
             </Disclosure>
           ))}
-        </>
+        </div>
       ) : (
         <Skeleton count={2} />
       )}
@@ -430,7 +433,7 @@ function ProductGrid({ products, loading }) {
                   <Link
                     to={"/product-detail/" + product.id}
                     key={product.id}
-                    className="relative hover:opacity-70"
+                    className="relative hover:opacity-70 border-b"
                   >
                     <div className="absolute -translate-x-1 -translate-y-1 flex text-sm font-bold text-white bg-[#E74C3C] justify-center z-10 p-1">
                       <span className="my-auto">
@@ -439,20 +442,19 @@ function ProductGrid({ products, loading }) {
                     </div>
                     {product.deleted && (
                       <div className="absolute w-full h-full justify-center items-center flex text-[#E74C3C] backdrop-blur-[2px] font-extrabold z-20">
-                        <div className="-rotate-45 text-3xl -translate-y-1/2">
+                        <div className="-rotate-45 text-3xl -translate-y-1/2 bg-green-500">
                           Product Deleted
                         </div>
                       </div>
                     )}
-
-                    <div className="aspect-h-5 aspect-w-4">
+                    <div className="aspect-h-5 aspect-w-4 outline">
                       <img
                         src={product.thumbnail}
                         alt={product.title}
-                        className="h-full w-full object-cover object-center"
+                        className="h-full w-full object-cover object-center p-1"
                       />
                     </div>
-                    <div className="mt-4 flex gap-2 justify-between">
+                    <div className="py-2 flex gap-2 justify-between">
                       <div className="flex flex-col gap-1">
                         <h3 className="text-base text-gray-200 font-bold">
                           <div>{product.title}</div>

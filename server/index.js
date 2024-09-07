@@ -9,6 +9,7 @@ const categoriesRouters = require("./routes/Categories");
 const authRouters = require("./routes/Auth");
 const userRouters = require("./routes/User");
 const cartRouters = require("./routes/Cart");
+require('dotenv').config();
 
 server.use(express.json());
 server.use(morgan("dev"));
@@ -28,7 +29,7 @@ main().catch((err) => console.log(err));
 
 async function main() {
   await mongoose.connect(
-    "mongodb+srv://helloWorld263:HelloWorld@sf.gn9doww.mongodb.net/SwiftFlair"
+    process.env.MONGO_DB
   );
   console.log("DataBase connected");
 }

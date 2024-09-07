@@ -1,5 +1,3 @@
-import { capitalizeFirstLetter } from "../../components/Functions";
-
 export function fetchAllProduct() {
   return new Promise(async (resolve) => {
     const response = await fetch("http://localhost:8080/products");
@@ -67,8 +65,8 @@ export function fetchAllFilter() {
   return new Promise(async (resolve) => {
     const brandJson = await fetch(`http://localhost:8080/brands`);
     const categoryJson = await fetch(`http://localhost:8080/categories`);
-    const brands = await brandJson.json()
-    const categories = await categoryJson.json()
+    const brands = await brandJson.json();
+    const categories = await categoryJson.json();
     const filters = getFilter(brands, categories);
     resolve({ data: filters });
   });
@@ -79,7 +77,8 @@ export function fetchProductByQuery(query) {
   return new Promise(async (resolve) => {
     const response = await fetch(`http://localhost:8080/products?${queryStr}`);
     const data = await response.json();
-    const totalItems = response.headers.get('X-Total-Count');
+
+    const totalItems = response.headers.get("X-Total-Count");
     resolve({ data: { products: data, totalItems } });
   });
 }

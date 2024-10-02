@@ -1,6 +1,6 @@
 export function fetchAllProduct() {
   return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:8080/products");
+    const response = await fetch(process.env.REACT_APP_BACKEND_API + "/products");
     const data = await response.json();
     resolve({ data });
   });
@@ -8,7 +8,7 @@ export function fetchAllProduct() {
 
 export function fetchProductById(id) {
   return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:8080/products/" + id);
+    const response = await fetch(process.env.REACT_APP_BACKEND_API + "/products/" + id);
     const data = await response.json();
     resolve({ data });
   });
@@ -16,7 +16,7 @@ export function fetchProductById(id) {
 
 export function createNewProduct(product) {
   return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:8080/products/", {
+    const response = await fetch(process.env.REACT_APP_BACKEND_API + "/products/", {
       method: "POST",
       body: JSON.stringify(product),
       headers: { "content-type": "application/json" },
@@ -29,7 +29,7 @@ export function createNewProduct(product) {
 export function updateProduct(product) {
   return new Promise(async (resolve) => {
     const response = await fetch(
-      `http://localhost:8080/products/${product.id}`,
+      process.env.REACT_APP_BACKEND_API + "/products/" + product.id,
       {
         method: "PATCH",
         body: JSON.stringify(product),
@@ -63,8 +63,8 @@ const getFilter = (brands, categories) => {
 
 export function fetchAllFilter() {
   return new Promise(async (resolve) => {
-    const brandJson = await fetch(`http://localhost:8080/brands`);
-    const categoryJson = await fetch(`http://localhost:8080/categories`);
+    const brandJson = await fetch(process.env.REACT_APP_BACKEND_API + "/brands");
+    const categoryJson = await fetch(process.env.REACT_APP_BACKEND_API + "/categories");
     const brands = await brandJson.json();
     const categories = await categoryJson.json();
     const filters = getFilter(brands, categories);
@@ -75,7 +75,7 @@ export function fetchAllFilter() {
 export function fetchProductByQuery(query) {
   const queryStr = generateQuery(query);
   return new Promise(async (resolve) => {
-    const response = await fetch(`http://localhost:8080/products?${queryStr}`);
+    const response = await fetch(process.env.REACT_APP_BACKEND_API + "/products?" + queryStr);
     const data = await response.json();
 
     const totalItems = response.headers.get("X-Total-Count");

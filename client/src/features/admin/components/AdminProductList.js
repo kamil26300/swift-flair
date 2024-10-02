@@ -1,5 +1,4 @@
 import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
-import { ITEMS_PER_PAGE } from "../../../components/constants";
 import Pagination from "./../../../components/Pagination";
 import { useSelector, useDispatch } from "react-redux";
 import { useState, Fragment, useEffect } from "react";
@@ -27,6 +26,8 @@ import { RxCross2 } from "react-icons/rx";
 import { BsFunnel } from "react-icons/bs";
 import { BiMinus } from "react-icons/bi";
 import Skeleton from "../../../components/loading/Skeleton";
+
+const ITEMS_PER_PAGE = process.env.REACT_APP_ITEMS_PER_PAGE
 
 const sortOptions = [
   { id: "bestRating", name: "Best Rating", sort: "rating", order: "desc" },

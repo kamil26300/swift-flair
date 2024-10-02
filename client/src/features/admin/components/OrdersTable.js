@@ -1,5 +1,4 @@
 import OrdersAccordion from "../../../components/OrdersAccordion";
-import { ORDERS_PER_PAGE } from "./../../../components/constants";
 import "react-accessible-accordion/dist/fancy-example.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
@@ -12,6 +11,8 @@ import {
 import Pagination from "../../../components/Pagination";
 import ReactModal from "react-modal";
 import toast from "react-hot-toast";
+
+const ORDERS_PER_PAGE = process.env.REACT_APP_ORDERS_PER_PAGE
 
 const OrdersTable = () => {
   const dispatch = useDispatch();

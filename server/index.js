@@ -3,12 +3,14 @@ const server = express();
 const cors = require("cors");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
+
 const productsRouters = require("./routes/Products");
 const brandsRouters = require("./routes/Brands");
 const categoriesRouters = require("./routes/Categories");
 const authRouters = require("./routes/Auth");
 const userRouters = require("./routes/User");
 const cartRouters = require("./routes/Cart");
+const orderRouters = require("./routes/Order");
 require('dotenv').config();
 
 server.use(express.json());
@@ -24,6 +26,7 @@ server.use("/categories", categoriesRouters.router);
 server.use("/auth", authRouters.router);
 server.use("/users", userRouters.router);
 server.use("/cart", cartRouters.router);
+server.use("/orders", orderRouters.router);
 
 main().catch((err) => console.log(err));
 

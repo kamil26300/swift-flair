@@ -1,4 +1,4 @@
-import { discountedPrice, formatPriceInINR } from "../components/Functions";
+import { discountedPrice, formatPriceInINR, getTotalCost, getTotalItems } from "../components/Functions";
 import { selectCartItems } from "../features/cart/cartSlice";
 import { selectUserInfo } from "../features/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -35,40 +35,20 @@ const Checkout = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const totalCost = cartItems.reduce(
-    (sum, item) =>
-      sum +
-      Math.floor(
-        item.product.price *
-          (1 - item.product.discountPercentage / 100) *
-          item.quantity
-      ),
-    0
-  );
-  const totalItems = cartItems.reduce(
-    (total, item) => total + item.quantity,
-    0
-  );
+  const totalItems = getTotalItems(cartItems)
+  const totalCost = getTotalCost(cartItems)
 
   const handleOrder = (e) => {
     e.preventDefault();
-    var date = new Date(),
-      formattedDate = date.toLocaleDateString("en-US", {
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-      });
     if (selectedAddress) {
       const order = {
-        cartItems,
+        items: cartItems,
         totalCost,
         totalItems,
-        userId: user.id,
+        user: user.id,
         selectedPayment,
         selectedAddress,
-        date: formattedDate,
-        status: "Pending",
-      };
+      };      
       dispatch(addOrderAsync(order));
     } else {
       toast.error("Select an address first");
@@ -92,7 +72,7 @@ const Checkout = () => {
   return (
     <>
       <MetaData
-        title={`Checkout - ${totalItems} item${totalItems > 1 ? "s" : ""}`}
+        title={`Checkout - ${totalItems} item${totalItems > 1 && "s"}`}
       />
       <div className="block lg:grid gap-7 grid-cols-8 xl:grid-cols-10">
         <div className="flex flex-col gap-12 border-b border-white pb-12 col-span-4 xl:col-span-6">

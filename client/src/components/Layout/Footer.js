@@ -15,7 +15,7 @@ const Footer = () => {
 
   return (
     <div className=" bg-[#1C1C1C] text-[#999999] p-7">
-      <h4 className="text-center">All Rights Reserved &copy; Kamil</h4>
+      <h4 className="text-center">Created by Kamil</h4>
       <div className="text-center mt-3 flex justify-center">
         {footerLinks.map((obj, index) => {
           return (

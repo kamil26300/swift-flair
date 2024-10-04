@@ -4,7 +4,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { MdClose, MdMenu, MdNotifications } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
-import { AiOutlineShoppingCart } from "react-icons/ai";
+import { BsCart  } from "react-icons/bs";
 import logo from "../images/logo.svg";
 import { selectLoggedInUser, signOutUser } from "../../features/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -128,11 +128,11 @@ export default function Header() {
                     onClick={() => navigate("/cart")}
                   >
                     <div className="flex h-10 w-10">
-                      <AiOutlineShoppingCart
+                      <BsCart
                         className="h-full w-6 ml-2"
                         aria-hidden="true"
                       />
-                      <span className="absolute bg-[#E74C3C] text-white text-sm top-0 right-0 rounded-full w-5 h-5">
+                      <span className="absolute bg-[#E74C3C] text-white text-sm top-1 right-1 rounded-full w-5 h-5">
                         {totalItems}
                       </span>
                     </div>

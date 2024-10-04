@@ -26,10 +26,10 @@ const OrdersAccordion = ({ orders, buttons }) => {
           {orders
             .slice(0)
             .reverse()
-            .map((order) => {
+            .map((order, id) => {
               const address = order.selectedAddress;
               return (
-                <AccordionItem>
+                <AccordionItem key={id}>
                   <AccordionItemHeading className="flex bg-[#333333]">
                     <AccordionItemButton className="bg-transparent px-4 py-6 w-full flex gap-6">
                       <div className="w-full items-center justify-start flex text-base font-bold">
@@ -54,10 +54,10 @@ const OrdersAccordion = ({ orders, buttons }) => {
                   <AccordionItemPanel className="px-3 py-4 border">
                     <div className="flex flex-col sm:flex-row justify-between gap-12">
                       <div className="flex justify-between flex-col gap-3">
-                        {order.items.map((item) => {
+                        {order.items.map((item, id) => {
                           const product = item.product
                           return (
-                            <div className="flex gap-2">
+                            <div key={id} className="flex gap-2">
                               <img
                                 className="h-12 w-12"
                                 src={product.thumbnail}

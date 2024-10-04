@@ -14,44 +14,7 @@ const orderSchema = new Schema({
   user: { type: Schema.Types.ObjectId, ref: "users", required: true },
   totalCost: { type: Number, required: true },
   selectedPayment: { type: String, required: true },
-  selectedAddress: {
-    type: Object,
-    properties: {
-      fullName: {
-        type: String,
-        required: true,
-      },
-      email: {
-        type: String,
-        required: true,
-        unique: true,
-      },
-      phone: {
-        type: String,
-        required: true,
-      },
-      streetAddress: {
-        type: String,
-        required: true,
-      },
-      city: {
-        type: String,
-        required: true,
-      },
-      state: {
-        type: String,
-        required: true,
-      },
-      postalCode: {
-        type: String,
-        required: true,
-      },
-      addId: {
-        type: Number,
-        required: true,
-      },
-    },
-  },
+  selectedAddress: { type: Schema.Types.Mixed, required: true },
   date: { type: Date, default: formattedDate },
   status: { type: String, default: "Pending" },
 });

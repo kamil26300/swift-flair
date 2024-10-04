@@ -15,8 +15,6 @@ import { RxCross2 } from "react-icons/rx";
 import { BsFunnel } from "react-icons/bs";
 import { BiMinus } from "react-icons/bi";
 
-const ITEMS_PER_PAGE = process.env.REACT_APP_ITEMS_PER_PAGE;
-
 const sortOptions = [
   { id: "bestRating", name: "Best Rating", sort: "rating", order: "desc" },
   {

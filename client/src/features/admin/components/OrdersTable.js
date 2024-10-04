@@ -14,8 +14,6 @@ import ReactModal from "react-modal";
 import toast from "react-hot-toast";
 import Skeleton from "../../../components/loading/Skeleton";
 
-const ORDERS_PER_PAGE = process.env.REACT_APP_ORDERS_PER_PAGE;
-
 const OrdersTable = () => {
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);

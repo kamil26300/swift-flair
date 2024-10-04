@@ -5,7 +5,7 @@ exports.createOrder = async (req, res) => {
   try {
     const doc = await order.save();
     res.status(201).json(doc);
-  } catch (error) {    
+  } catch (error) {
     res.status(400).json(error);
   }
 };
@@ -31,14 +31,10 @@ exports.fetchOrderByUser = async (req, res) => {
     if (orders.length === 0) {
       return res
         .status(404)
-        .json({ message: "No orders found for the given user" });
+        .json({ message: "No orders found for the given user", length: 0 });
     }
-
-    res.status(200).json({
-      orders,
-      currentPage: _page,
-      totalPages: Math.ceil(orders.length / _limit),
-    });
+    res.set('X-Total-Count', orders.length);
+    res.status(200).json(orders);
   } catch (error) {
     res.status(400).json(error);
   }
@@ -49,7 +45,7 @@ exports.updateOrder = async (req, res) => {
   try {
     const order = await Order.findByIdAndUpdate(id, req.body, {
       new: true,
-    }).populate("product");
+    });
     res.status(200).json(order);
   } catch (error) {
     res.status(400).json(error);

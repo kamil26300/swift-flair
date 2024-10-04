@@ -1,11 +1,11 @@
-import ProductList from "./../features/product/components/ProductList";
+import UserProductList from "./../features/product/components/UserProductList";
 import MetaData from "../components/MetaData";
 
 const HomePage = () => {
   return (
     <>
       <MetaData />
-      <ProductList />
+      <UserProductList />
     </>
   );
 };

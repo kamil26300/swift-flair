@@ -1,32 +1,21 @@
 import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
-import { ITEMS_PER_PAGE } from "../../../components/constants";
 import { useSelector, useDispatch } from "react-redux";
 import { useState, Fragment, useEffect } from "react";
 import { Link } from "react-router-dom";
-import {
-  fetchProductByQueryAsync,
-  selectProductLoading,
-  clearProductOnChange,
-  selectFilterLoading,
-  fetchAllFilterAsync,
-  selectAllProducts,
-  selectTotalItems,
-  selectFilters,
-} from "../productSlice";
+
+import { discountedPrice, formatPriceInINR } from "../../components/Functions";
+import Skeleton from "../../components/loading/Skeleton";
+import Pagination from "../../components/Pagination";
+import Rating from "../../components/Rating";
+import NoData from "../../components/NoData";
 
 // Icons
 import { AiOutlineDown, AiOutlinePlus } from "react-icons/ai";
-import Pagination from "../../../components/Pagination";
-import Rating from "../../../components/Rating";
-import NoData from "../../../components/NoData";
 import { RxCross2 } from "react-icons/rx";
 import { BsFunnel } from "react-icons/bs";
 import { BiMinus } from "react-icons/bi";
-import {
-  formatPriceInINR,
-  discountedPrice,
-} from "../../../components/Functions";
-import Skeleton from "../../../components/loading/Skeleton";
+
+const ITEMS_PER_PAGE = process.env.REACT_APP_ITEMS_PER_PAGE
 
 const sortOptions = [
   { id: "bestRating", name: "Best Rating", sort: "rating", order: "desc" },
@@ -48,7 +37,16 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function ProductList() {
+export default function ProductList({
+  fetchProductByQueryAsync,
+  selectProductLoading,
+  clearProductOnChange,
+  selectFilterLoading,
+  fetchAllFilterAsync,
+  selectAllProducts,
+  selectTotalItems,
+  selectFilters,
+}) {  
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [selectedQuery, setSelectedQuery] = useState(null);
   const [selectedFilter, setSelectedFilter] = useState({});
@@ -136,7 +134,7 @@ export default function ProductList() {
       )}
 
       <main className="mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex gap-9 bg-[#1A1A1A] pt-5 z-30 items-baseline justify-between border-b border-gray-200 sticky top-16">
+        <div className="flex gap-9 bg-[#1A1A1A] pt-5 z-20 items-baseline justify-between border-b border-gray-200 sticky top-16">
           <h1 className="text-2xl sm:text-4xl font-bold tracking-tight">
             All Products
           </h1>
@@ -198,12 +196,12 @@ export default function ProductList() {
 
         <section aria-labelledby="products-heading" className="pt-6">
           <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
-              <DesktopFilter
-                selectedFilter={selectedFilter}
-                filters={filters}
-                handleFilterChange={handleFilterChange}
-                loading={loadingFilter}
-              />
+            <DesktopFilter
+              selectedFilter={selectedFilter}
+              filters={filters}
+              handleFilterChange={handleFilterChange}
+              loading={loadingFilter}
+            />
             <ProductGrid products={products} loading={loadingProduct} />
           </div>
           <Pagination

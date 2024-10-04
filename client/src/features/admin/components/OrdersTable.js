@@ -38,7 +38,7 @@ const OrdersTable = () => {
   return (
     <div className="lg:w-5/6 w-full">
       <OrdersAccordion
-        orders={orders}
+        orders={orders.orders}
         buttons={(order) => (
           <div className="flex sm:flex-col flex-row justify-around gap-4">
             <button

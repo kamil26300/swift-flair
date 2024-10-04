@@ -3,6 +3,7 @@ const server = express();
 const cors = require("cors");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
+const path = require("path");
 
 const productsRouters = require("./routes/Products");
 const brandsRouters = require("./routes/Brands");
@@ -13,6 +14,7 @@ const cartRouters = require("./routes/Cart");
 const orderRouters = require("./routes/Order");
 require('dotenv').config();
 
+server.use(express.static(path.resolve(__dirname, 'build')))
 server.use(express.json());
 server.use(morgan("dev"));
 server.use(

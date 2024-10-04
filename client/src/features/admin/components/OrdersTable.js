@@ -7,19 +7,22 @@ import {
   selectTotalOrders,
   selectOrders,
   updateOrderAsync,
+  selectStatus,
 } from "../../order/orderSlice";
 import Pagination from "../../../components/Pagination";
 import ReactModal from "react-modal";
 import toast from "react-hot-toast";
+import Skeleton from "../../../components/loading/Skeleton";
 
-const ORDERS_PER_PAGE = process.env.REACT_APP_ORDERS_PER_PAGE
+const ORDERS_PER_PAGE = process.env.REACT_APP_ORDERS_PER_PAGE;
 
 const OrdersTable = () => {
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);
   const [open, setOpen] = useState(false);
-  const [selectedOrder, setSelectedOrder] = useState(-1);
   const orders = useSelector(selectOrders);
+  const status = useSelector(selectStatus);
+  const [selectedOrder, setSelectedOrder] = useState(-1);
   const totalOrders = useSelector(selectTotalOrders);
 
   const handleShow = (order) => {
@@ -37,25 +40,31 @@ const OrdersTable = () => {
 
   return (
     <div className="lg:w-5/6 w-full">
-      <OrdersAccordion
-        orders={orders.orders}
-        buttons={(order) => (
-          <div className="flex sm:flex-col flex-row justify-around gap-4">
-            <button
-              onClick={(e) => handleShow(order)}
-              className="text-[#E74C3C] w-full border border-[#E74C3C] py-2 px-4"
-            >
-              View
-            </button>
-            <button
-              onClick={(e) => handleEdit(order)}
-              className="text-[#3498DB] w-full border border-[#3498DB] py-2 px-4"
-            >
-              Edit
-            </button>
-          </div>
-        )}
-      />
+      {
+        (status === "loading" ? (
+          <Skeleton count={1} />
+        ) : (
+          <OrdersAccordion
+            orders={orders}
+            buttons={(order) => (
+              <div className="flex sm:flex-col flex-row justify-around gap-4">
+                <button
+                  onClick={(e) => handleShow(order)}
+                  className="text-[#E74C3C] w-full border border-[#E74C3C] py-2 px-4"
+                >
+                  View
+                </button>
+                <button
+                  onClick={(e) => handleEdit(order)}
+                  className="text-[#3498DB] w-full border border-[#3498DB] py-2 px-4"
+                >
+                  Edit
+                </button>
+              </div>
+            )}
+          />
+        ))
+      }
       <Pagination
         totalItems={totalOrders}
         selectedPage={page}
@@ -90,7 +99,7 @@ const EditModal = ({ open, setOpen, order }) => {
     "Delivered",
     "Cancelled",
   ];
-  
+
   const [newStatus, setNewStatus] = useState("");
 
   useEffect(() => {
@@ -100,17 +109,17 @@ const EditModal = ({ open, setOpen, order }) => {
   }, [order]);
 
   const handleUpdate = (e) => {
-    e.preventDefault()
-    const updatedOrder = {...order, status: newStatus}
+    e.preventDefault();
+    const updatedOrder = { ...order, status: newStatus };
     try {
-      dispatch(updateOrderAsync(updatedOrder))
-      toast.success("Status changed!")
+      dispatch(updateOrderAsync(updatedOrder));
+      toast.success("Status changed!");
     } catch (error) {
-      toast.error("Something went wrong")
+      toast.error("Something went wrong");
       console.log(error);
     }
-    setOpen(false)
-  }
+    setOpen(false);
+  };
 
   return (
     <ReactModal
@@ -142,7 +151,10 @@ const EditModal = ({ open, setOpen, order }) => {
             </option>
           ))}
         </select>
-        <button onClick={handleUpdate} className="flex justify-center whitespace-nowrap py-2 px-3 w-min bg-[#3498DB] hover:opacity-80 text-white font-semibold focus:outline-none">
+        <button
+          onClick={handleUpdate}
+          className="flex justify-center whitespace-nowrap py-2 px-3 w-min bg-[#3498DB] hover:opacity-80 text-white font-semibold focus:outline-none"
+        >
           Save details
         </button>
       </div>

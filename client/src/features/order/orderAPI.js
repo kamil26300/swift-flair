@@ -1,6 +1,6 @@
 export function addOrder(item) {
   return new Promise(async (resolve) => {
-    const response = await fetch(process.env.REACT_APP_BACKEND_API + "/orders", {
+    const response = await fetch("/orders", {
       method: "POST",
       body: JSON.stringify(item),
       headers: { "content-type": "application/json" },
@@ -12,7 +12,7 @@ export function addOrder(item) {
 
 export function updateOrder(order) {
   return new Promise(async (resolve) => {
-    const response = await fetch(process.env.REACT_APP_BACKEND_API + "/orders/" + order.id, {
+    const response = await fetch("/orders/" + order.id, {
       method: "PATCH",
       body: JSON.stringify(order),
       headers: { "content-type": "application/json" },
@@ -24,9 +24,9 @@ export function updateOrder(order) {
 
 export function fetchAllOrders(page) {
   return new Promise(async (resolve) => {
-    const response = await fetch(process.env.REACT_APP_BACKEND_API + "/orders?" + page)
+    const response = await fetch("/orders?" + page);
     const data = await response.json();
-    const totalOrders = await response.headers.get("X-Total-Count")
-    resolve({ data: {orders: data, totalOrders: +totalOrders} });
+    const totalOrders = await response.headers.get("X-Total-Count");
+    resolve({ data: { orders: data, totalOrders: +totalOrders } });
   });
 }

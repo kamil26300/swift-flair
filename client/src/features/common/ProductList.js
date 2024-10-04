@@ -426,8 +426,8 @@ function ProductGrid({ products, loading, admin }) {
             <Skeleton image={true} count={6} />
           ) : (
             <>
-              {products.map((product) => (
-                <div className="flex flex-col justify-between gap-3">
+              {products.map((product, id) => (
+                <div key={id} className="flex flex-col justify-between gap-3">
                   <Link
                     to={"/product-detail/" + product.id}
                     key={product.id}

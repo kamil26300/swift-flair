@@ -79,9 +79,9 @@ const ProductForm = () => {
 
   const imageInput = [
     { label: "Image 1 / Thumbnail", name: "thumbnail" },
-    { label: "Image 2", name: "img2" },
-    { label: "Image 3", name: "img3" },
-    { label: "Image 4", name: "img4" },
+    { label: "Image 2 (optional)", name: "img2" },
+    { label: "Image 3 (optional)", name: "img3" },
+    { label: "Image 4 (optional)", name: "img4" },
   ];
 
   const validateForm = (value, field) => {
@@ -129,9 +129,6 @@ const ProductForm = () => {
         break;
 
       case "thumbnail":
-      case "img2":
-      case "img3":
-      case "img4":
         if (value.length === 0) {
           error = "Mandatory";
         }
@@ -153,9 +150,10 @@ const ProductForm = () => {
 
   useEffect(() => {
     const setDisabledBtn = () => {
-      const allFieldsFilled = Object.values(fields).every(
-        (value) => value !== ""
-      );
+      const allFieldsFilled = Object.keys(fields)
+        .filter((key) => !["img2", "img3", "img4"].includes(key))
+        .every((key) => fields[key] !== "");
+
       const isErrorFieldEmpty = Object.values(errors).every(
         (value) => value === ""
       );
@@ -218,12 +216,12 @@ const ProductForm = () => {
     }
   };
 
-  const handleDelete = () => {
+  const handleDelete = (alreadyDeleted) => {
     const currentProduct = { ...product };
-    currentProduct.deleted = true;
+    currentProduct.deleted = !alreadyDeleted;
     try {
       dispatch(updateProductAsync(currentProduct));
-      toast.success("Product deleted successfully");
+      toast.success(`Product ${alreadyDeleted ? "restored" : "deleted"} successfully`);
       navigate("/admin");
     } catch (error) {
       console.log(error);
@@ -359,11 +357,17 @@ const ProductForm = () => {
           {params.id && (
             <button
               type="button"
-              onClick={handleDelete}
+              onClick={() => handleDelete(product?.deleted)}
               className="flex justify-center py-2 gap-2 whitespace-nowrap px-3 bg-[#E74C3C] hover:opacity-80 text-white font-semibold focus:outline-none"
             >
-              <MdDeleteForever className=" mt-1 scale-150" />
-              Delete
+              {product?.deleted ? (
+                "Restore"
+              ) : (
+                <>
+                  <MdDeleteForever className=" mt-1 scale-150" />
+                  Delete
+                </>
+              )}
             </button>
           )}
           <Link

@@ -7,7 +7,7 @@ const Layout = (props) => {
       <Header />
       <main
         style={{ minHeight: "calc(100vh - 8rem)", paddingTop: "calc(4rem + 35px)" }}
-        className="bg-[#1A1A1A] w-full text-[#CCCCCC] flex pb-[35px] px-[20px] justify-center items-center"
+        className="bg-[#1A1A1A] w-full text-[#CCCCCC] flex pb-[60px] px-[20px] justify-center items-center"
       >
         {props.children}
       </main>

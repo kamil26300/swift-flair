@@ -16,7 +16,7 @@ const UserOrder = () => {
     dispatch(fetchLoggedInUserOrdersAsync(user.id));
   }, [dispatch, user]);
 
-  const handleReview = (order) => {
+  const handleReview = (order) => {    
     console.log("Handle Review" + order.id);
   };
 
@@ -27,7 +27,7 @@ const UserOrder = () => {
   return (
     <div className="lg:w-5/6 w-full">
       <OrdersAccordion
-        orders={orders}
+        orders={orders.orders}
         buttons={(order) => (
           <div className="flex sm:flex-col flex-row justify-around gap-4">
             <button

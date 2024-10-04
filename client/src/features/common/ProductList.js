@@ -15,7 +15,7 @@ import { RxCross2 } from "react-icons/rx";
 import { BsFunnel } from "react-icons/bs";
 import { BiMinus } from "react-icons/bi";
 
-const ITEMS_PER_PAGE = process.env.REACT_APP_ITEMS_PER_PAGE
+const ITEMS_PER_PAGE = process.env.REACT_APP_ITEMS_PER_PAGE;
 
 const sortOptions = [
   { id: "bestRating", name: "Best Rating", sort: "rating", order: "desc" },
@@ -46,7 +46,8 @@ export default function ProductList({
   selectAllProducts,
   selectTotalItems,
   selectFilters,
-}) {  
+  admin,
+}) {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [selectedQuery, setSelectedQuery] = useState(null);
   const [selectedFilter, setSelectedFilter] = useState({});
@@ -60,12 +61,15 @@ export default function ProductList({
   const dispatch = useDispatch();
 
   const handlePage = (pageNo) => {
-    setSelectedQuery({
-      ...selectedQuery,
-      deleted: { false: true },
+    let initialQuery = {
       _page: { [pageNo]: true },
       _limit: { [ITEMS_PER_PAGE]: true },
-    });
+    };
+    if (admin === undefined) initialQuery["deleted"] = { false: true };
+    setSelectedQuery((prev) => ({
+      ...prev,
+      ...initialQuery,
+    }));
     setSelectedPage(pageNo);
   };
 
@@ -97,16 +101,7 @@ export default function ProductList({
   };
 
   useEffect(() => {
-    const handlePageOne = () => {
-      setSelectedQuery((prev) => ({
-        ...prev,
-        deleted: { false: true },
-        _page: { 1: true },
-        _limit: { [ITEMS_PER_PAGE]: true },
-      }));
-      setSelectedPage(1);
-    };
-    handlePageOne();
+    handlePage(1);
   }, [selectedFilter, selectedSort]);
 
   useEffect(() => {
@@ -202,7 +197,11 @@ export default function ProductList({
               handleFilterChange={handleFilterChange}
               loading={loadingFilter}
             />
-            <ProductGrid products={products} loading={loadingProduct} />
+            <ProductGrid
+              admin={admin}
+              products={products}
+              loading={loadingProduct}
+            />
           </div>
           <Pagination
             totalItems={totalItems}
@@ -410,9 +409,15 @@ function DesktopFilter({
     </form>
   );
 }
-function ProductGrid({ products, loading }) {
+function ProductGrid({ products, loading, admin }) {
   return (
     <div className="bg-[#333333] px-4 py-6 sm:px-6 lg:col-span-3">
+      {admin && <Link
+        to="/admin/product-form"
+        className="mb-6 w-fit flex px-5 justify-center border bg-[#E74C3C] text-white py-3 font-bold hover:opacity-80"
+      >
+        + Add Product
+      </Link>}
       {!loading && products.length === 0 ? (
         <NoData color={"#1A1A1A"}>No Data found.</NoData>
       ) : (
@@ -422,50 +427,64 @@ function ProductGrid({ products, loading }) {
           ) : (
             <>
               {products.map((product) => (
-                <Link
-                  to={"/product-detail/" + product.id}
-                  key={product.id}
-                  className="relative hover:opacity-70 border-b"
-                >
-                  <div className="absolute -translate-x-1 -translate-y-1 flex text-sm font-bold text-white bg-[#E74C3C] justify-center z-10 p-1">
-                    <span className="my-auto">
-                      {product.discountPercentage}% off
-                    </span>
-                  </div>
-
-                  <div className="aspect-h-5 aspect-w-4 outline">
-                    <img
-                      src={product.thumbnail}
-                      alt={product.title}
-                      className="h-full w-full object-cover object-center p-1"
-                    />
-                  </div>
-                  <div className="py-2 flex gap-2 justify-between">
-                    <div className="flex flex-col gap-1">
-                      <h3 className="text-base text-gray-200 font-bold">
-                        <div>{product.title}</div>
-                      </h3>
-                      <Rating rating={product.rating} />
-                      <p className="mt-1 flex text-sm text-gray-300">
-                        {product.stock < 50 && product.stock > 0
-                          ? `Only ${product.stock} left.`
-                          : ""}
-                        {product.stock === 0 ? `Product out of stock.` : ""}
-                      </p>
+                <div className="flex flex-col justify-between gap-3">
+                  <Link
+                    to={"/product-detail/" + product.id}
+                    key={product.id}
+                    className="relative hover:opacity-70 border-b"
+                  >
+                    <div className="absolute -translate-x-1 -translate-y-1 flex text-sm font-bold text-white bg-[#E74C3C] justify-center z-10 p-1">
+                      <span className="my-auto">
+                        {product.discountPercentage}% off
+                      </span>
                     </div>
-                    <div className="flex flex-col gap-2">
-                      <p className=" whitespace-nowrap text-sm font-bold line-through text-gray-400">
-                        {formatPriceInINR(product.price)}
-                      </p>
-                      <p className=" whitespace-nowrap text-sm font-bold text-gray-200">
-                        {discountedPrice(
-                          product.price,
-                          product.discountPercentage
-                        )}
-                      </p>
+                    {admin && product.deleted && (
+                      <div className="absolute w-full h-full justify-center items-center flex text-[#E74C3C] backdrop-blur-[2px] font-extrabold z-[15]">
+                        <div className="-rotate-45 text-3xl -translate-y-1/2">
+                          Product Deleted
+                        </div>
+                      </div>
+                    )}
+                    <div className="aspect-h-5 aspect-w-4 outline">
+                      <img
+                        src={product.thumbnail}
+                        alt={product.title}
+                        className="h-full w-full object-cover object-center p-1"
+                      />
                     </div>
-                  </div>
-                </Link>
+                    <div className="py-2 flex gap-2 justify-between">
+                      <div className="flex flex-col gap-1">
+                        <h3 className="text-base text-gray-200 font-bold">
+                          <div>{product.title}</div>
+                        </h3>
+                        <Rating rating={product.rating} />
+                        <p className="mt-1 flex text-sm text-gray-300">
+                          {product.stock < 50 && product.stock > 0
+                            ? `Only ${product.stock} left.`
+                            : ""}
+                          {product.stock === 0 ? `Product out of stock.` : ""}
+                        </p>
+                      </div>
+                      <div className="flex flex-col gap-2">
+                        <p className=" whitespace-nowrap text-sm font-bold line-through text-gray-400">
+                          {formatPriceInINR(product.price)}
+                        </p>
+                        <p className=" whitespace-nowrap text-sm font-bold text-gray-200">
+                          {discountedPrice(
+                            product.price,
+                            product.discountPercentage
+                          )}
+                        </p>
+                      </div>
+                    </div>
+                  </Link>
+                  {admin && <Link
+                    to={"/admin/product-form/edit/" + product.id}
+                    className="mb-6 px-5 justify-center border bg-[#3498DB] text-center text-white py-3 font-bold hover:opacity-80"
+                  >
+                    Edit
+                  </Link>}
+                </div>
               ))}
             </>
           )}

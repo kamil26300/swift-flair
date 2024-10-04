@@ -22,13 +22,13 @@ server.use(
     exposedHeaders: ["X-Total-Count"],
   })
 );
-server.use("/products", productsRouters.router);
-server.use("/brands", brandsRouters.router);
-server.use("/categories", categoriesRouters.router);
+server.use("/api/products", productsRouters.router);
+server.use("/api/brands", brandsRouters.router);
+server.use("/api/categories", categoriesRouters.router);
 server.use("/auth", authRouters.router);
-server.use("/users", userRouters.router);
-server.use("/cart", cartRouters.router);
-server.use("/orders", orderRouters.router);
+server.use("/api/users", userRouters.router);
+server.use("/api/cart", cartRouters.router);
+server.use("/api/orders", orderRouters.router);
 
 main().catch((err) => console.log(err));
 

@@ -1,6 +1,6 @@
 export function fetchAllProduct() {
   return new Promise(async (resolve) => {
-    const response = await fetch("/products");
+    const response = await fetch("/api/products");
     const data = await response.json();
     resolve({ data });
   });
@@ -8,7 +8,7 @@ export function fetchAllProduct() {
 
 export function fetchProductById(id) {
   return new Promise(async (resolve) => {
-    const response = await fetch("/products/" + id);
+    const response = await fetch("/api/products/" + id);
     const data = await response.json();
     resolve({ data });
   });
@@ -16,7 +16,7 @@ export function fetchProductById(id) {
 
 export function createNewProduct(product) {
   return new Promise(async (resolve) => {
-    const response = await fetch("/products/", {
+    const response = await fetch("/api/products/", {
       method: "POST",
       body: JSON.stringify(product),
       headers: { "content-type": "application/json" },
@@ -28,7 +28,7 @@ export function createNewProduct(product) {
 
 export function updateProduct(product) {
   return new Promise(async (resolve) => {
-    const response = await fetch("/products/" + product.id, {
+    const response = await fetch("/api/products/" + product.id, {
       method: "PATCH",
       body: JSON.stringify(product),
       headers: { "content-type": "application/json" },
@@ -60,8 +60,8 @@ const getFilter = (brands, categories) => {
 
 export function fetchAllFilter() {
   return new Promise(async (resolve) => {
-    const brandJson = await fetch("/brands");
-    const categoryJson = await fetch("/categories");
+    const brandJson = await fetch("/api/brands");
+    const categoryJson = await fetch("/api/categories");
     const brands = await brandJson.json();
     const categories = await categoryJson.json();
     const filters = getFilter(brands, categories);
@@ -72,7 +72,7 @@ export function fetchAllFilter() {
 export function fetchProductByQuery(query) {
   const queryStr = generateQuery(query);
   return new Promise(async (resolve) => {
-    const response = await fetch("/products?" + queryStr);
+    const response = await fetch("/api/products?" + queryStr);
     const data = await response.json();
 
     const totalItems = response.headers.get("X-Total-Count");

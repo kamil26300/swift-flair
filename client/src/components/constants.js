@@ -1,2 +1,2 @@
-const ITEMS_PER_PAGE = 36
-const ORDERS_PER_PAGE = 12
+export const ITEMS_PER_PAGE = 36
+export const ORDERS_PER_PAGE = 12

@@ -13,6 +13,7 @@ import Pagination from "../../../components/Pagination";
 import ReactModal from "react-modal";
 import toast from "react-hot-toast";
 import Skeleton from "../../../components/loading/Skeleton";
+import { ORDERS_PER_PAGE } from "../../../components/constants";
 
 const OrdersTable = () => {
   const dispatch = useDispatch();

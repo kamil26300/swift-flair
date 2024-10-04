@@ -14,6 +14,7 @@ import { AiOutlineDown, AiOutlinePlus } from "react-icons/ai";
 import { RxCross2 } from "react-icons/rx";
 import { BsFunnel } from "react-icons/bs";
 import { BiMinus } from "react-icons/bi";
+import { ITEMS_PER_PAGE } from "../../components/constants";
 
 const sortOptions = [
   { id: "bestRating", name: "Best Rating", sort: "rating", order: "desc" },

@@ -62,7 +62,8 @@ export const userSlice = createSlice({
   },
 });
 
-export const selectUserOrders = (state) => state.user.userOrders;
+export const selectUserStatus = (state) => state.order.status;
 export const selectUserInfo = (state) => state.user.userInfo;
+export const selectUserOrders = (state) => state.user.userOrders;
 
 export default userSlice.reducer;

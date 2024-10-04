@@ -51,10 +51,12 @@ export default function UserProfile() {
             <div className="flex flex-col text-sm sm:text-xl text-right font-semibold whitespace-nowrap">
               <span>Name : </span>
               <span>Email ID : </span>
+              <span>Role : </span>
             </div>
             <div className="flex flex-col text-sm sm:text-xl whitespace-nowrap">
               <span>{capitalizeFirstLetter(user.name)}</span>
               <span>{user.email}</span>
+              <span>{user.role}</span>
             </div>
           </div>
           {/* Addresses */}

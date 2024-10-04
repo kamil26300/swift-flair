@@ -21,7 +21,7 @@ const OrdersAccordion = ({ orders, buttons }) => {
   return (
     <div className="flex flex-col my-6">
       <span className="text-3xl font-bold mb-3">Orders</span>
-      {orders.length !== 0 ? (
+      {orders && orders.length !== 0 ? (
         <Accordion allowZeroExpanded className="">
           {orders
             .slice(0)
@@ -54,36 +54,39 @@ const OrdersAccordion = ({ orders, buttons }) => {
                   <AccordionItemPanel className="px-3 py-4 border">
                     <div className="flex flex-col sm:flex-row justify-between gap-12">
                       <div className="flex justify-between flex-col gap-3">
-                        {order.cartItems.map((item) => (
-                          <div className="flex gap-2">
-                            <img
-                              className="h-12 w-12"
-                              src={item.thumbnail}
-                              alt="img"
-                            />
-                            <p>
-                              <Link
-                                className="hover:underline"
-                                to={"/product-detail/" + item.productId}
-                              >
-                                <span className="sm:inline hidden">
-                                  {item.title}
-                                </span>
-                                <span className="inline sm:hidden">
-                                  {item.title.length > 13
-                                    ? item.title.substring(0, 10) + "..."
-                                    : item.title}
-                                </span>
-                              </Link>{" "}
-                              -{" "}
-                              {discountedPrice(
-                                item.price,
-                                item.discountPercentage
-                              )}{" "}
-                              ({item.quantity})
-                            </p>
-                          </div>
-                        ))}
+                        {order.items.map((item) => {
+                          const product = item.product
+                          return (
+                            <div className="flex gap-2">
+                              <img
+                                className="h-12 w-12"
+                                src={product.thumbnail}
+                                alt="img"
+                              />
+                              <p>
+                                <Link
+                                  className="hover:underline"
+                                  to={"/product-detail/" + product.id}
+                                >
+                                  <span className="sm:inline hidden">
+                                    {product.title}
+                                  </span>
+                                  <span className="inline sm:hidden">
+                                    {product.title.length > 13
+                                      ? product.title.substring(0, 10) + "..."
+                                      : product.title}
+                                  </span>
+                                </Link>{" "}
+                                -{" "}
+                                {discountedPrice(
+                                  product.price,
+                                  product.discountPercentage
+                                )}{" "}
+                                ({item.quantity})
+                              </p>
+                            </div>
+                          );
+                        })}
                         <span className="text-xl">
                           Paid via: {order.selectedPayment}
                         </span>

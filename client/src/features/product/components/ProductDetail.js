@@ -94,87 +94,90 @@ const ProductDetail = ({ setTitle }) => {
       <div className="flex flex-col xl:w-5/6">
         {!productLoading && product ? (
           <div className="sm:flex w-full gap-5 lg:gap-12">
-            {/* Image gallery */}
-            <div className="mt-6 flex flex-col sm:flex-row-reverse gap-5">
-              <div>
-                <img
-                  src={product.images[selectedImage]}
-                  alt={product.title}
-                  className="mx-auto lg:h-full h-4/6 w-[20rem] md:w-[25rem] lg:w-[35rem] object-cover object-center ring-1 ring-white mb-4"
-                />
-                {itemInCart === -1 ? (
-                  <button
-                    onClick={(e) => handleAddToCart(e)}
-                    disabled={product.stock === 0}
-                    className="flex w-full justify-center border bg-[#3498DB] text-white py-3 font-bold hover:opacity-80 disabled:cursor-not-allowed opacity-80"
-                  >
-                    Add to Cart
-                  </button>
-                ) : (
-                  <div className="flex items-end justify-between text-sm gap-6">
-                    <p className="flex items-center gap-3">
-                      Qty
-                      <select
-                        defaultValue={cartItems[itemInCart].quantity}
-                        className="bg-inherit"
-                        onChange={(e) =>
-                          handleQuantityChange(e, cartItems[itemInCart])
+            {/* Image gallery and Buttons */}
+            <div>
+              <div className="mt-6 flex flex-col sm:flex-row-reverse gap-5 sticky top-32">
+                <div>
+                  <img
+                    src={product.images[selectedImage]}
+                    alt={product.title}
+                    className="mx-auto lg:h-[35rem] h-[25rem] object-cover object-center ring-1 ring-white mb-4"
+                  />
+                  {itemInCart === -1 ? (
+                    <button
+                      onClick={(e) => handleAddToCart(e)}
+                      disabled={product.stock === 0}
+                      className="flex w-full justify-center border bg-[#3498DB] text-white py-3 font-bold hover:opacity-80 disabled:cursor-not-allowed opacity-80"
+                    >
+                      Add to Cart
+                    </button>
+                  ) : (
+                    <div className="flex items-end justify-between text-sm gap-6">
+                      <p className="flex items-center gap-3">
+                        Qty
+                        <select
+                          defaultValue={cartItems[itemInCart].quantity}
+                          className="bg-inherit"
+                          onChange={(e) =>
+                            handleQuantityChange(e, cartItems[itemInCart])
+                          }
+                        >
+                          {Array.from({ length: 10 }, (_, i) => i + 1).map(
+                            (quantity) => (
+                              <option
+                                className="bg-black text-white"
+                                key={quantity}
+                                value={quantity}
+                              >
+                                {quantity}
+                              </option>
+                            )
+                          )}
+                        </select>
+                      </p>
+                      <button
+                        type="button"
+                        onClick={(e) => handleRemove(e, product.id)}
+                        className="flex w-full justify-center items-center gap-2 border bg-[#E74C3C] text-white py-3 font-bold hover:opacity-80 disabled:cursor-not-allowed opacity-80"
+                      >
+                        <BsCartX className="text-2xl" />
+                        Remove
+                      </button>
+                    </div>
+                  )}
+                </div>
+                <RadioGroup value={selectedImage} onChange={setSelectedImage}>
+                  <div className="flex flex-row sm:flex-col gap-2 sm:gap-10">
+                    {product.images.map((img, id) => (
+                      <RadioGroup.Option
+                        key={id}
+                        value={id}
+                        onClick={() => setSelectedImage(id)}
+                        className={({ checked }) =>
+                          classNames(
+                            checked ? "ring-2 ring-white" : "",
+                            "relative flex cursor-pointer items-center justify-center p-0.5 focus:outline-none"
+                          )
                         }
                       >
-                        {Array.from({ length: 10 }, (_, i) => i + 1).map(
-                          (quantity) => (
-                            <option
-                              className="bg-black text-white"
-                              key={quantity}
-                              value={quantity}
-                            >
-                              {quantity}
-                            </option>
-                          )
-                        )}
-                      </select>
-                    </p>
-                    <button
-                      type="button"
-                      onClick={(e) => handleRemove(e, product.id)}
-                      className="flex w-full justify-center items-center gap-2 border bg-[#E74C3C] text-white py-3 font-bold hover:opacity-80 disabled:cursor-not-allowed opacity-80"
-                    >
-                      <BsCartX className="text-2xl" />
-                      Remove
-                    </button>
+                        <img
+                          src={img}
+                          alt={product.title}
+                          className="h-20 w-16 object-cover object-center"
+                        />
+                      </RadioGroup.Option>
+                    ))}
                   </div>
-                )}
+                </RadioGroup>
               </div>
-              <RadioGroup value={selectedImage} onChange={setSelectedImage}>
-                <div className="flex flex-row sm:flex-col gap-2 sm:gap-10">
-                  {product.images.map((img, id) => (
-                    <RadioGroup.Option
-                      key={id}
-                      value={id}
-                      onClick={() => setSelectedImage(id)}
-                      className={({ checked }) =>
-                        classNames(
-                          checked ? "ring-2 ring-white" : "",
-                          "relative flex cursor-pointer items-center justify-center p-0.5 focus:outline-none"
-                        )
-                      }
-                    >
-                      <img
-                        src={img}
-                        alt={product.title}
-                        className="h-20 w-16 object-cover object-center"
-                      />
-                    </RadioGroup.Option>
-                  ))}
-                </div>
-              </RadioGroup>
             </div>
 
             {/* Product info */}
             <div className="mt-6 flex flex-col md:flex-grow">
               <div className="flex justify-between">
                 <p className="text-2xl flex gap-1 font-bold tracking-tight sm:text-2xl">
-                  {product.title}{product.brand && ` - ${product.brand}`}
+                  {product.title}
+                  {product.brand && ` - ${product.brand}`}
                 </p>
                 <p className="bg-[#333333] text-sm h-min p-1 my-auto ml-2">
                   {capitalizeFirstLetter(product.category)}
@@ -249,6 +252,29 @@ const ProductDetail = ({ setTitle }) => {
                     </p>
                   )}
                 </div>
+                {product.reviews && product.reviews.length > 0 && (
+                  <div className="mt-6">
+                    <h3 className="text-lg font-bold mb-4">Reviews</h3>
+                    <div className="flex flex-col gap-4">
+                      {product.reviews.map((review, index) => (
+                        <div key={index} className="bg-gray-900 p-4">
+                          <div className="flex justify-between">
+                            <p className="font-bold">{review.reviewerName}</p>
+                            <p className="text-sm text-gray-400">
+                              {new Date(review.date).toLocaleDateString()}
+                            </p>
+                          </div>
+                          <div className="flex items-center gap-2 mt-1">
+                            <Rating rating={review.rating} />
+                          </div>
+                          <p className="text-base text-gray-300 mt-2">
+                            {review.comment}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>

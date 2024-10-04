@@ -5,7 +5,7 @@ exports.createOrder = async (req, res) => {
   try {
     const doc = await order.save();
     res.status(201).json(doc);
-  } catch (error) {
+  } catch (error) {    
     res.status(400).json(error);
   }
 };
@@ -21,10 +21,24 @@ exports.deleteOrder = async (req, res) => {
 };
 
 exports.fetchOrderByUser = async (req, res) => {
-  const { user } = req.query;
+  const { user, _page = 1, _limit = 18 } = req.query;
+
   try {
-    const orders = await Order.find({ user: user });
-    res.status(200).json(orders);
+    const orders = await Order.find(user ? { user: user } : {})
+      .skip((_page - 1) * _limit)
+      .limit(_limit);
+
+    if (orders.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No orders found for the given user" });
+    }
+
+    res.status(200).json({
+      orders,
+      currentPage: _page,
+      totalPages: Math.ceil(orders.length / _limit),
+    });
   } catch (error) {
     res.status(400).json(error);
   }

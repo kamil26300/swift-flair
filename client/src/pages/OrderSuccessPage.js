@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectLoggedInUser } from "./../features/auth/authSlice";
 import { clearCartOfUserAsync } from "../features/cart/cartSlice";
 import { resetOrder } from "../features/order/orderSlice";
+import { reduceString } from "../components/Functions";
 
 const OrderSuccessPage = () => {
   const param = useParams();
@@ -22,7 +23,8 @@ const OrderSuccessPage = () => {
     <>
       <MetaData title="Order Placed." />
       <div className="flex items-center flex-col">
-        <p className="text-[#E74C3C] text-3xl">Order number #{param.id}</p>
+        <p className="text-[#E74C3C] text-3xl">Order number #{reduceString(param.id, 4)}</p>
+        {/* Change */}
         <h2 className="sm:text-2xl text-xl text-center">
           Successfully placed.
         </h2>

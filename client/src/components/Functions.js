@@ -27,3 +27,10 @@ export const getTotalCost = (cartItems) => {
 export const getTotalItems = (cartItems) => {
   return cartItems.reduce((total, item) => total + item.quantity, 0);
 };
+
+export function reduceString(str, i) {
+  if (str.length <= i + 2) {
+    return str;
+  }
+  return str.slice(0, i) + "...";
+}

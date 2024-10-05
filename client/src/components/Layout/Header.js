@@ -4,7 +4,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { MdClose, MdMenu, MdNotifications } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
-import { BsCart  } from "react-icons/bs";
+import { BsCart } from "react-icons/bs";
 import logo from "../images/logo.svg";
 import { selectLoggedInUser, signOutUser } from "../../features/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -89,7 +89,7 @@ export default function Header() {
                 <div className="my-auto hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
                     {navigation.map((item, id) => (
-                      <div key={id} >
+                      <div key={id}>
                         {((item.admin === true && user?.role === "admin") ||
                           item.admin === false) && (
                           <Link
@@ -128,10 +128,7 @@ export default function Header() {
                     onClick={() => navigate("/cart")}
                   >
                     <div className="flex h-10 w-10">
-                      <BsCart
-                        className="h-full w-6 ml-2"
-                        aria-hidden="true"
-                      />
+                      <BsCart className="h-full w-6 ml-2" aria-hidden="true" />
                       <span className="absolute bg-[#E74C3C] text-white text-sm top-1 right-1 rounded-full w-5 h-5">
                         {totalItems}
                       </span>
@@ -197,21 +194,25 @@ export default function Header() {
 
           <Disclosure.Panel className="sm:hidden">
             <div className="space-y-1 px-2 pb-3 pt-2">
-              {navigation.map((item) => (
-                <Link
-                  key={item.name}
-                  as="a"
-                  to={item.to}
-                  className={classNames(
-                    item.current
-                      ? "bg-[#1A1A1A] text-white"
-                      : "text-gray-300 hover:bg-gray-600 hover:text-white",
-                    "block px-3 py-2 text-base font-medium"
+              {navigation.map((item, id) => (
+                <div key={id}>
+                  {((item.admin === true && user?.role === "admin") ||
+                    item.admin === false) && (
+                    <Link
+                      key={item.name}
+                      to={item.to}
+                      className={classNames(
+                        item.current
+                          ? "bg-[#1A1A1A] text-white"
+                          : "text-gray-300 hover:bg-gray-600 hover:text-white",
+                        "block px-3 py-2 text-base font-medium"
+                      )}
+                      aria-current={item.current ? "page" : undefined}
+                    >
+                      {item.name}
+                    </Link>
                   )}
-                  aria-current={item.current ? "page" : undefined}
-                >
-                  {item.name}
-                </Link>
+                </div>
               ))}
             </div>
           </Disclosure.Panel>

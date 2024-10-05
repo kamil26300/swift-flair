@@ -39,31 +39,29 @@ const OrdersTable = () => {
 
   return (
     <div className="lg:w-5/6 w-full">
-      {
-        (status === "loading" ? (
-          <Skeleton count={1} />
-        ) : (
-          <OrdersAccordion
-            orders={orders}
-            buttons={(order) => (
-              <div className="flex sm:flex-col flex-row justify-around gap-4">
-                <button
-                  onClick={(e) => handleShow(order)}
-                  className="text-[#E74C3C] w-full border border-[#E74C3C] py-2 px-4"
-                >
-                  View
-                </button>
-                <button
-                  onClick={(e) => handleEdit(order)}
-                  className="text-[#3498DB] w-full border border-[#3498DB] py-2 px-4"
-                >
-                  Edit
-                </button>
-              </div>
-            )}
-          />
-        ))
-      }
+      {status === "idle" ? (
+        <OrdersAccordion
+          orders={orders}
+          buttons={(order) => (
+            <div className="flex sm:flex-col flex-row justify-around gap-4">
+              <button
+                onClick={(e) => handleShow(order)}
+                className="text-[#E74C3C] w-full border border-[#E74C3C] py-2 px-4"
+              >
+                View
+              </button>
+              <button
+                onClick={(e) => handleEdit(order)}
+                className="text-[#3498DB] w-full border border-[#3498DB] py-2 px-4"
+              >
+                Edit
+              </button>
+            </div>
+          )}
+        />
+      ) : (
+        <Skeleton count={1} />
+      )}
       <Pagination
         totalItems={totalOrders}
         selectedPage={page}

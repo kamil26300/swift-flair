@@ -29,9 +29,7 @@ const UserOrder = () => {
 
   return (
     <div className="lg:w-5/6 w-full">
-      {status === "loading" ? (
-        <Skeleton count={1} />
-      ) : (
+      {status === "idle" ? (
         <OrdersAccordion
           orders={orders}
           buttons={(order) => (
@@ -51,6 +49,8 @@ const UserOrder = () => {
             </div>
           )}
         />
+      ) : (
+        <Skeleton count={1} />
       )}
       {/* <Pagination
         totalItems={totalOrders}

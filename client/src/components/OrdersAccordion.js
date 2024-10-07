@@ -33,7 +33,7 @@ const OrdersAccordion = ({ orders, buttons }) => {
                   <AccordionItemHeading className="flex bg-[#333333]">
                     <AccordionItemButton className="bg-transparent px-4 py-6 w-full flex gap-6">
                       <div className="w-full items-center justify-start flex text-base font-bold">
-                        #{reduceString(order.id)}
+                        #{reduceString(order.id, 4)}
                         {/* change */}
                       </div>
                       <div className="w-full items-center justify-center hidden sm:flex">

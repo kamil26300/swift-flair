@@ -1,4 +1,78 @@
 {
+  "routes": [
+    {
+      "src": "/",
+      "dest": "/"
+    },
+    {
+      "src": "/contact",
+      "dest": "/"
+    },
+    {
+      "src": "/about",
+      "dest": "/"
+    },
+    {
+      "src": "/policy",
+      "dest": "/"
+    },
+    {
+      "src": "/register",
+      "dest": "/"
+    },
+    {
+      "src": "/login",
+      "dest": "/"
+    },
+    {
+      "src": "/forgot-password",
+      "dest": "/"
+    },
+    {
+      "src": "/product-detail/:id",
+      "dest": "/"
+    },
+    {
+      "src": "/checkout",
+      "dest": "/"
+    },
+    {
+      "src": "/admin",
+      "dest": "/"
+    },
+    {
+      "src": "/admin/product-form",
+      "dest": "/"
+    },
+    {
+      "src": "/admin/product-form/edit/:id",
+      "dest": "/"
+    },
+    {
+      "src": "/admin/orders",
+      "dest": "/"
+    },
+    {
+      "src": "/cart",
+      "dest": "/"
+    },
+    {
+      "src": "/order-success/:id",
+      "dest": "/"
+    },
+    {
+      "src": "/orders",
+      "dest": "/"
+    },
+    {
+      "src": "/profile",
+      "dest": "/"
+    },
+    {
+      "src": "",
+      "dest": "/"
+    }
+  ],
   "builds": [
     {
       "src": "index.js",
@@ -10,5 +84,5 @@
     }
   ],
 
-  "rewrites": [{ "source": "/(.*)", "destination": "index.js" }]
+  "rewrites": [{ "source": "/(.*)", "destination": "/" }]
 }

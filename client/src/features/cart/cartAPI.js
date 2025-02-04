@@ -1,10 +1,13 @@
 export function addToCart(item) {
   return new Promise(async (resolve) => {
-    const response = await fetch("/api/cart", {
-      method: "POST",
-      body: JSON.stringify(item),
-      headers: { "content-type": "application/json" },
-    });
+    const response = await fetch(
+      process.env.REACT_APP_BACKEND_API + "/api/cart",
+      {
+        method: "POST",
+        body: JSON.stringify(item),
+        headers: { "content-type": "application/json" },
+      }
+    );
     const data = await response.json();
     resolve({ data });
   });
@@ -12,10 +15,13 @@ export function addToCart(item) {
 
 export function removeFromCart(id) {
   return new Promise(async (resolve) => {
-    const response = await fetch("/api/cart/" + id, {
-      method: "DELETE",
-      headers: { "content-type": "application/json" },
-    });
+    const response = await fetch(
+      process.env.REACT_APP_BACKEND_API + "/api/cart/" + id,
+      {
+        method: "DELETE",
+        headers: { "content-type": "application/json" },
+      }
+    );
     const data = await response.json();
     resolve({ data: { id } });
   });
@@ -23,7 +29,9 @@ export function removeFromCart(id) {
 
 export function fetchItemByUserId(userId) {
   return new Promise(async (resolve) => {
-    const response = await fetch("/api/cart?user=" + userId);
+    const response = await fetch(
+      process.env.REACT_APP_BACKEND_API + "/api/cart?user=" + userId
+    );
     const data = await response.json();
     resolve({ data });
   });
@@ -42,11 +50,14 @@ export function clearCartOfUser(userId) {
 
 export function updateItem(update) {
   return new Promise(async (resolve) => {
-    const response = await fetch(`/api/cart/${update.id}`, {
-      method: "PATCH",
-      body: JSON.stringify(update),
-      headers: { "content-type": "application/json" },
-    });
+    const response = await fetch(
+      process.env.REACT_APP_BACKEND_API + `/api/cart/${update.id}`,
+      {
+        method: "PATCH",
+        body: JSON.stringify(update),
+        headers: { "content-type": "application/json" },
+      }
+    );
     const data = await response.json();
     resolve({ data });
   });
